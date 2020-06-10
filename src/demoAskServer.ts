@@ -8,7 +8,7 @@ import { parse as parseAskScript } from './askscript';
 
 import chalk = require('chalk');
 import cors = require('cors');
-import { customAlphabet } from 'nanoid'
+import { customAlphabet } from 'nanoid';
 
 const nanoid = customAlphabet('1234567890abcdef', 8);
 
@@ -39,7 +39,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', async (req, res) => {
   res.type('html');
-  res.send('<html><head><title>AskQL</title></head><body><p><b>Ask</b> me anything!</p><p><a href="http://askql.org/">AskQL website</a></p></body></html>');
+  res.send(
+    '<html><head><title>AskQL</title></head><body><p><b>Ask</b> me anything!</p><p><a href="http://askql.org/">AskQL website</a></p></body></html>'
+  );
 });
 
 app.post('/compile/js', async (req, res) => {
@@ -59,7 +61,7 @@ app.post('/compile/js', async (req, res) => {
 
     askCodeSource = askCodeToSource(askCode);
   } catch (e) {
-    console.error(id + ' -- ' + (new Date().toString()));
+    console.error(id + ' -- ' + new Date().toString());
     console.error(id + ' -- ' + code);
     console.error(id + ' -- ' + e);
     console.error('\n\n');
@@ -67,7 +69,14 @@ app.post('/compile/js', async (req, res) => {
     // res.status(400);
 
     // res.json({ error: e.toString() });
-    res.json({ data: `document.write('<pre style="color:red; white-space: pre-wrap;">' + ${JSON.stringify(e.toString(), null, 2)} + '</pre>');`, language: 'js' });
+    res.json({
+      data: `document.write('<pre style="color:red; white-space: pre-wrap;">' + ${JSON.stringify(
+        e.toString(),
+        null,
+        2
+      )} + '</pre>');`,
+      language: 'js',
+    });
     return;
   }
 
@@ -76,16 +85,32 @@ app.post('/compile/js', async (req, res) => {
 
     console.log(id + ' -- ' + chalk.grey(`⬅️ ${JSON.stringify(result)}`));
     console.log('\n\n');
-    res.json({ askCodeSource, data: `document.write('<pre style="color:blue; font-weight: bold; white-space: pre-wrap;">' + JSON.stringify(${JSON.stringify(result, null, 2)}, null, 2) + '</pre>');`, language: 'js' });
+    res.json({
+      askCodeSource,
+      data: `document.write('<pre style="color:blue; font-weight: bold; white-space: pre-wrap;">' + JSON.stringify(${JSON.stringify(
+        result,
+        null,
+        2
+      )}, null, 2) + '</pre>');`,
+      language: 'js',
+    });
     // res.json({ askCodeSource, data: result, language: 'ask' });
   } catch (e) {
-    console.error(id + ' -- ' + (new Date().toString()));
+    console.error(id + ' -- ' + new Date().toString());
     console.error(id + ' -- ' + code);
     console.error(id + ' -- ' + e);
     console.error('\n\n');
     // res.json({ askCodeSource, error: e.toString() });
     // res.status(400);
-    res.json({ askCodeSource, data: `document.write('<pre style="color:red; white-space: pre-wrap;">' + ${JSON.stringify(e.toString(), null, 2)} + '</pre>');`, language: 'js' });
+    res.json({
+      askCodeSource,
+      data: `document.write('<pre style="color:red; white-space: pre-wrap;">' + ${JSON.stringify(
+        e.toString(),
+        null,
+        2
+      )} + '</pre>');`,
+      language: 'js',
+    });
   }
 });
 
